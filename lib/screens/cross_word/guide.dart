@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import 'widgets.dart';
 
 class GuideRoute extends StatelessWidget {
-  final bool isTv;
 
-  const GuideRoute({super.key, required this.isTv});
+
+  const GuideRoute({super.key,});
 
   @override
   Widget build(BuildContext context) {
-    double paddingHorizontal = isTv ? 200 : 20;
+    double paddingHorizontal =  20;
     return Scaffold(
       appBar: AppBar(
         title: const Text('How to Play'),

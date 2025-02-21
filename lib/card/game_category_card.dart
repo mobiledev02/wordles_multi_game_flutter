@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:wordles_multi_game_flutter/bindings/route_names.dart';
-import 'package:wordles_multi_game_flutter/widgets/cust_inkwell.dart';
 
 import '../constants/constant_font.dart';
 import '../constants/constant_image.dart';
@@ -17,39 +16,36 @@ class GameCategoryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CustomInkWell(
-      onTap: () {
-        Get.toNamed(
-          AppRouteNames.gameIntroScreen,
-          arguments: game,
-        );
-      },
-      child: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage(
-              ConstantImage.getGamesImage(game),
-            ),
-            fit: BoxFit.contain,
+    return Container(
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage(
+            ConstantImage.getGamesImage(game),
           ),
+          fit: BoxFit.contain,
         ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            CustomText(
-              align: TextAlign.center,
-              txtTitle: ConstantString.getGamesTitle(game),
-              style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                    fontWeight: FontWeight.w700,
-                    fontFamily: ConstantFont.countachFont,
-                  ),
-            ),
-            CommonButton(
-              onTap: () {},
-              title: "Play",
-            ),
-          ],
-        ),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          CustomText(
+            align: TextAlign.center,
+            txtTitle: ConstantString.getGamesTitle(game),
+            style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                  fontWeight: FontWeight.w700,
+                  fontFamily: ConstantFont.countachFont,
+                ),
+          ),
+          CommonButton(
+            onTap: () {
+              Get.toNamed(
+                AppRouteNames.gameIntroScreen,
+                arguments: game,
+              );
+            },
+            title: "Play",
+          ),
+        ],
       ),
     );
   }

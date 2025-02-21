@@ -28,7 +28,6 @@ class MyApp extends StatelessWidget {
           // navigatorObservers: [FirebaseAnalyticsHelper.observer],
           theme: CustomAppTheme.lightTheme,
           initialBinding: MainBindings(),
-
           initialRoute: AppRouteNames.homeScreen,
           getPages: AppRoutes.routes,
         );

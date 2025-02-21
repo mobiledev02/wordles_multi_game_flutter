@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 
 import '../constants/constant_color.dart';
 import 'cust_image.dart';
@@ -37,6 +38,63 @@ class CommonButton extends StatelessWidget {
                 color: ConstantColor.ffffffff,
                 fontWeight: FontWeight.w700,
               ),
+        ),
+      ),
+    );
+  }
+}
+
+class CommonBorderButton extends StatelessWidget {
+  const CommonBorderButton({
+    super.key,
+    required this.onTap,
+    required this.title,
+  });
+
+  final String title;
+  final Function()? onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomInkWell(
+      onTap: onTap,
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10.r),
+          border: Border(
+            bottom: BorderSide(
+              color: ConstantColor.ff05000B.withValues(alpha: 0.3),
+              width: 4,
+            ),
+          ),
+        ),
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+          decoration: BoxDecoration(
+            color: ConstantColor.ff05000B,
+            borderRadius: BorderRadius.circular(10.r),
+            border: Border.all(
+              color: ConstantColor.ffffffff,
+              width: 1,
+            ),
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                Icons.play_arrow,
+                color: ConstantColor.ffffffff,
+              ),
+              Gap(10.w),
+              CustomText(
+                txtTitle: title,
+                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                      color: ConstantColor.ffffffff,
+                      fontWeight: FontWeight.w700,
+                    ),
+              ),
+            ],
+          ),
         ),
       ),
     );

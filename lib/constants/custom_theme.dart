@@ -37,6 +37,7 @@ class CustomAppTheme {
       systemOverlayStyle: const SystemUiOverlayStyle(),
       elevation: 0.0,
       centerTitle: true,
+      foregroundColor: Colors.black,
       backgroundColor: Colors.white,
       actionsIconTheme: IconThemeData(
         color: Color(_primaryColor),

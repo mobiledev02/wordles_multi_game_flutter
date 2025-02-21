@@ -2,6 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
+import 'package:wordles_multi_game_flutter/constants/constant_color.dart';
 
 enum SelectedColor {
   initial,
@@ -14,20 +17,41 @@ Color getColor(SelectedColor? state, bool isInKeyboard) {
   switch (state) {
     case SelectedColor.initial:
       if (!isInKeyboard)
-        return Colors.white;
+        return ConstantColor.ffE4E4E7;
       else
         return Colors.grey.shade400;
     case SelectedColor.absent:
-      return Colors.white54;
+      return ConstantColor.ffE4E4E7;
     case SelectedColor.present:
-      return Colors.green;
+      return ConstantColor.ffA4F4CF;
     case SelectedColor.presentWrongPlace:
-      return Colors.amber;
+      return ConstantColor.ffFCDD88;
     default:
       if (!isInKeyboard)
         return Colors.grey.shade600;
       else
-        return Colors.white;
+        return Colors.grey;
+  }
+}
+
+Color getFontColor(SelectedColor? state, bool isInKeyboard) {
+  switch (state) {
+    case SelectedColor.initial:
+      if (!isInKeyboard)
+        return ConstantColor.ff05000B;
+      else
+        return Colors.grey.shade400;
+    case SelectedColor.absent:
+      return ConstantColor.ff05000B;
+    case SelectedColor.present:
+      return ConstantColor.ff00A63E;
+    case SelectedColor.presentWrongPlace:
+      return ConstantColor.ffBB4D00;
+    default:
+      if (!isInKeyboard)
+        return Colors.grey.shade600;
+      else
+        return Colors.grey;
   }
 }
 
@@ -58,15 +82,21 @@ class CustomKeyboard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return Container(
+      decoration: BoxDecoration(
+        color: ConstantColor.ffF4F4F5,
+      ),
       height: 200,
-      child: Column(
-        children: [
-          buildRowOne(),
-          buildRowTwo(),
-          buildRowThree(),
-          const SizedBox(height: 20)
-        ],
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
+        child: Column(
+          children: [
+            buildRowOne(),
+            buildRowTwo(),
+            buildRowThree(),
+            Gap(MediaQuery.of(context).padding.bottom)
+          ],
+        ),
       ),
     );
   }

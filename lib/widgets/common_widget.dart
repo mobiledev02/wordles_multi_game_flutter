@@ -10,15 +10,17 @@ AppBar commonAppBar({
   double? leadingWidth,
   required String title,
   List<Widget>? actions,
+  double? fontSize,
 }) {
   return AppBar(
-    leadingWidth: leadingWidth,
+    leadingWidth: leadingWidth ?? 30,
     centerTitle: false,
     title: CustomText(
       txtTitle: title,
-      style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-            fontWeight: FontWeight.w700,
-          ),
+      style: Theme.of(context)
+          .textTheme
+          .headlineSmall
+          ?.copyWith(fontWeight: FontWeight.w700, fontSize: fontSize),
     ),
     actions: actions == null
         ? []

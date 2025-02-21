@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:wordles_multi_game_flutter/screens/spelling_bee/spelling_bee_game_screen.dart';
 
+import '../screens/cross_word/cross_word_game_screen.dart';
 import '../screens/game_intro_screen.dart';
 import '../screens/home_screen.dart';
 import 'bindings.dart';
@@ -16,6 +17,10 @@ mixin AppRoutes {
     GetPage(
       name: AppRouteNames.gameIntroScreen,
       page: () => const GameIntroScreen(),
+    ),
+    GetPage(
+      name: AppRouteNames.crossWordGameScreen,
+      page: () => const CrossWordGameScreen(),
     ),
     GetPage(
       name: AppRouteNames.spellingBeeGameScreen,

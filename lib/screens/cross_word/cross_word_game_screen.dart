@@ -101,8 +101,11 @@ class _CrossWordGameScreenState extends State<CrossWordGameScreen> {
             )
           ],
         ),
-        body: ColoredBox(
-          color: Colors.purple,
+        body: CommonBackground(
+          colors: [
+            ConstantColor.ff8E51FF,
+            Colors.white,
+          ],
           child: Column(
             children: [
               Expanded(
@@ -224,9 +227,15 @@ class _CrossWordGameScreenState extends State<CrossWordGameScreen> {
           });
         }
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text("Congrats! You won 🎉"),
-        ));
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: CustomText(
+              txtTitle: "Congrats! You won 🎉",
+              style: Theme.of(context).textTheme.displaySmall?.copyWith(),
+            ),
+          ),
+        );
+        _restartGame();
         log('you won');
         _requestReview();
       }

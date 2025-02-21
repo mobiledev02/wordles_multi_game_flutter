@@ -11,11 +11,10 @@ class ConstantColor {
   static Color ffDEBFFB = const Color(0xFFDEBFFB);
   static Color ff05000B = const Color(0xFF05000B);
   static Color ffA4F4CF = const Color(0xFFA4F4CF);
-  static Color ffE4E4E7= const Color(0xFFE4E4E7);
-  static Color ff8E51FF= const Color(0xFF8E51FF);
-  static Color ff9B62FD= const Color(0xFF9B62FD);
-  static Color ffF3F4F6= const Color(0xFFF3F4F6);
-
+  static Color ffE4E4E7 = const Color(0xFFE4E4E7);
+  static Color ff8E51FF = const Color(0xFF8E51FF);
+  static Color ff9B62FD = const Color(0xFF9B62FD);
+  static Color ffF3F4F6 = const Color(0xFFF3F4F6);
 }
 
 const int _custColorBlue = 0xFFFFFFFF;

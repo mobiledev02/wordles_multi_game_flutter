@@ -21,6 +21,9 @@ class ConstantString {
   static const String update = "UPDATE";
   static const String save = "Save";
 
+  //! Spelling bee variables...
+  static const String spellingBeeTitle = "Spelling Bee";
+
   static String getGamesTitle(Games game) {
     String str = "";
     switch (game) {

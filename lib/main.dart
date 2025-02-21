@@ -24,12 +24,11 @@ class MyApp extends StatelessWidget {
       builder: (_, child) {
         return GetMaterialApp(
           navigatorKey: navigatorKey,
-          title: 'G Vibrator',
+          title: 'Wordles Multi Game',
           // navigatorObservers: [FirebaseAnalyticsHelper.observer],
           theme: CustomAppTheme.lightTheme,
           initialBinding: MainBindings(),
-
-          initialRoute: AppRouteNames.homeScreen,
+          initialRoute: AppRouteNames.spellingBeeGameScreen,
           getPages: AppRoutes.routes,
         );
       },

@@ -7,7 +7,6 @@ import 'package:wordles_multi_game_flutter/widgets/cust_image.dart';
 
 import '../bindings/route_names.dart';
 import '../constants/constant_font.dart';
-import '../constants/constant_image.dart';
 import '../utils/custom_enum.dart';
 import '../widgets/common_button.dart';
 import '../widgets/custom_text.dart';
@@ -69,6 +68,7 @@ class _GameIntroScreenState extends State<GameIntroScreen> {
                       imgURL: introScreenModel.image,
                       height: 140.h,
                       width: 140.h,
+                      boxfit: BoxFit.contain,
                     ),
                     Gap(20.h),
                     CustomText(

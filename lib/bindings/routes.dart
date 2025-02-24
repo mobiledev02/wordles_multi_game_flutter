@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 import 'package:wordles_multi_game_flutter/screens/spelling_bee/spelling_bee_game_screen.dart';
 
-import '../screens/cross_word/cross_word_game_screen.dart';
+import '../screens/wordles/wordles_game_screen.dart';
 import '../screens/game_intro_screen.dart';
 import '../screens/home_screen.dart';
 import 'bindings.dart';
@@ -19,12 +19,13 @@ mixin AppRoutes {
       page: () => const GameIntroScreen(),
     ),
     GetPage(
-      name: AppRouteNames.crossWordGameScreen,
-      page: () => const CrossWordGameScreen(),
-    ),
+        name: AppRouteNames.crossWordGameScreen,
+        page: () => const CrossWordGameScreen(),
+        binding: WordlesBindings()),
     GetPage(
       name: AppRouteNames.spellingBeeGameScreen,
       page: () => SpellingBeeScreen(),
+      binding: SpellingBeeBindings(),
     ),
   ];
 }

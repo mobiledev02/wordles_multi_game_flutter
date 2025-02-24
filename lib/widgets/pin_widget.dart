@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:wordles_multi_game_flutter/widgets/custom_text.dart';
 
 class PinWidget extends StatelessWidget {
@@ -16,8 +17,8 @@ class PinWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(
-        vertical: 10,
-        horizontal: 14,
+        vertical: 10.h,
+        horizontal: 14.w,
       ),
       decoration: BoxDecoration(
         color: color,
@@ -26,7 +27,7 @@ class PinWidget extends StatelessWidget {
           width: 1,
         ),
         borderRadius: BorderRadius.circular(
-          100,
+          100.r,
         ),
       ),
       child: CustomText(

@@ -11,6 +11,9 @@ class ConstantImage {
   static const String spellingBee = "$imgPath/spelling_bee.png";
   static const String setting = "$imgPath/setting.png";
   static const String dot = "$imgPath/dot.png";
+  static const String hint = "$imgPath/hint.png";
+  static const String star = "$imgPath/star.png";
+  static const String refresh = "$imgPath/refresh.png";
 
   static String getGamesImage(Games game) {
     String icon = "";

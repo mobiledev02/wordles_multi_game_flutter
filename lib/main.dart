@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:wordles_multi_game_flutter/utils/shared_preference.dart';
 
 import 'bindings/bindings.dart';
 import 'bindings/route_names.dart';
@@ -8,6 +9,9 @@ import 'bindings/routes.dart';
 import 'constants/custom_theme.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  SharedPreferencesHelper.loadSavedData();
   runApp(const MyApp());
 }
 

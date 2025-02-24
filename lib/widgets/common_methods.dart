@@ -28,14 +28,6 @@ void commonUrlLauncher(String url) async {
 //       connectivityResult[0] == ConnectivityResult.wifi);
 // }
 
-Future<bool?> showToast(String massage) {
-  return Fluttertoast.showToast(
-    textColor: ConstantColor.ffffffff,
-    msg: massage,
-    // backgroundColor: getThemeFirstColor,
-  );
-}
-
 Color getSliderColor(double value) {
   // List of colors to cycle through
   List<Color> colors = [
@@ -100,12 +92,12 @@ Color getSliderColor(double value) {
   return colors[index];
 }
 
-Future<bool?> commonToast({required String message}) {
+Future<bool?> commonToast(
+    {required String message, int timeInSecForIosWeb = 3}) {
   return Fluttertoast.showToast(
-    gravity: ToastGravity.TOP,
+    gravity: ToastGravity.BOTTOM,
     msg: message,
-    timeInSecForIosWeb: 3,
-    // textColor: getThemeFirstColor,
-    backgroundColor: ConstantColor.ffffffff,
+    timeInSecForIosWeb: timeInSecForIosWeb,
+    backgroundColor: ConstantColor.ff05000B,
   );
 }

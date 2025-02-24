@@ -106,19 +106,25 @@ class CommonIconButton extends StatelessWidget {
     super.key,
     required this.image,
     required this.onTap,
+    this.bgColor,
+    this.height,
+    this.width,
   });
   final String image;
   final Function() onTap;
+  final Color? bgColor;
+  final double? height;
+  final double? width;
 
   @override
   Widget build(BuildContext context) {
     return CustomInkWell(
       onTap: onTap,
       child: Container(
-        height: 40.h,
-        width: 40.h,
+        height: (height ?? 40).h,
+        width: (width ?? 40).h,
         decoration: BoxDecoration(
-          color: ConstantColor.ffF3F4F6,
+          color: bgColor ?? ConstantColor.ffF3F4F6,
           shape: BoxShape.circle,
         ),
         child: CustImage(

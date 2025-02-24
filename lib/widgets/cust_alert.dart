@@ -43,9 +43,8 @@ custAlert({
                 ),
                 child: CustomText(
                   align: TextAlign.center,
-                  txtTitle:
-                      AlertMessageString.getErrorMsg(
-                          error: message, returnDefault: showDefaultError),
+                  txtTitle: AlertMessageString.getErrorMsg(
+                      error: message, returnDefault: showDefaultError),
                   style: Theme.of(context).textTheme.bodyLarge,
                 ),
               ),

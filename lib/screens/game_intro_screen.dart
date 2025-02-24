@@ -39,7 +39,7 @@ class _GameIntroScreenState extends State<GameIntroScreen> {
             image: AssetImage(
               introScreenModel.bgImage,
             ),
-            fit: BoxFit.contain,
+            fit: BoxFit.cover,
           ),
         ),
         child: SafeArea(
@@ -100,6 +100,7 @@ class _GameIntroScreenState extends State<GameIntroScreen> {
                               Get.offNamed(AppRouteNames.crossWordGameScreen);
                               break;
                             case Games.spellingBee:
+                              Get.offNamed(AppRouteNames.spellingBeeGameScreen);
                               break;
                           }
                         },

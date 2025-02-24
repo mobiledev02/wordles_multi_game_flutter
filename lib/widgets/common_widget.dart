@@ -13,6 +13,7 @@ AppBar commonAppBar({
   double? fontSize,
 }) {
   return AppBar(
+    toolbarHeight: 46.h,
     leadingWidth: leadingWidth ?? 30,
     centerTitle: false,
     title: CustomText(

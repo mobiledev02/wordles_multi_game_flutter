@@ -28,7 +28,7 @@ class ConstantString {
     String str = "";
     switch (game) {
       case Games.theCrosswords:
-        str = "The\nCrosswords";
+        str = "Wordles";
         break;
       case Games.spellingBee:
         str = "Spelling\nBee";

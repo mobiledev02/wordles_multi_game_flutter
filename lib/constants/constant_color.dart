@@ -18,6 +18,7 @@ class ConstantColor {
   static Color ffF4F4F5 = const Color(0xFFF4F4F5);
   static Color ffBB4D00 = const Color(0xFFBB4D00);
   static Color ff00A63E = const Color(0xFF00A63E);
+  static Color ff71717B = const Color(0xFF71717B);
 }
 
 const int _custColorBlue = 0xFFFFFFFF;

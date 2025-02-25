@@ -46,6 +46,7 @@ dependencies:
   cached_network_image: ^3.4.1
   shimmer: ^3.0.0
   collection: ^1.19.0
+  flutter_polygon: ^0.3.0+2
 
 dev_dependencies:
   flutter_test:

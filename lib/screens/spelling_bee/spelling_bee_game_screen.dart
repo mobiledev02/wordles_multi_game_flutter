@@ -3,22 +3,19 @@ import 'package:flutter_polygon/flutter_polygon.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
-import 'package:wordles_multi_game_flutter/constants/constant_font.dart';
 
-import 'package:wordles_multi_game_flutter/constants/constant_image.dart';
-import 'package:wordles_multi_game_flutter/widgets/cust_inkwell.dart';
-import 'package:wordles_multi_game_flutter/widgets/rich_text.dart';
-
-import '../../widgets/custom_text.dart';
 import '/constants/constant_color.dart';
+import '/constants/constant_font.dart';
+import '/constants/constant_image.dart';
 import '/constants/constant_string.dart';
 import '/screens/spelling_bee/controller/spelling_bee_controller.dart';
 import '/widgets/common_button.dart';
 import '/widgets/common_widget.dart';
+import '/widgets/cust_inkwell.dart';
 import '/widgets/pin_widget.dart';
 import '../../utils/shared_preference.dart';
+import '../../widgets/custom_text.dart';
 import '../../widgets/hint_button.dart';
-
 import '../wordles/guide_screen.dart';
 
 class SpellingBeeScreen extends StatefulWidget {
@@ -90,23 +87,7 @@ class _SpellingBeeScreenState extends State<SpellingBeeScreen> {
               width: double.infinity,
               color: Colors.white,
             ),
-            Obx(() {
-              return CustomRichText(
-                title: word.value.replaceAll(spellingBeeController.centerLetter,
-                    "#${spellingBeeController.centerLetter}"),
-                fancyTextStyle: TextStyle(
-                  fontSize: 30,
-                  fontWeight: FontWeight.w600,
-                  color: ConstantColor.ff8E51FF,
-                  fontFamily: ConstantFont.moonchild,
-                ),
-                normalTextStyle: TextStyle(
-                  fontSize: 30,
-                  fontWeight: FontWeight.w600,
-                  fontFamily: ConstantFont.moonchild,
-                ),
-              );
-            }),
+            _buildTypedWord(),
             SizedBox(
               width: 300.h,
               height: 300.h,
@@ -129,6 +110,40 @@ class _SpellingBeeScreenState extends State<SpellingBeeScreen> {
         ),
       ),
     );
+  }
+
+  Obx _buildTypedWord() {
+    return Obx(() {
+      return RichText(
+        text: TextSpan(
+          children: word.value.isEmpty
+              ? [
+                  TextSpan(
+                    text: " ",
+                    style: TextStyle(
+                      fontSize: 30,
+                      fontWeight: FontWeight.w600,
+                      color: ConstantColor.ff05000B,
+                      fontFamily: ConstantFont.moonchild,
+                    ),
+                  )
+                ]
+              : word.value.split('').map((char) {
+                  return TextSpan(
+                    text: char,
+                    style: TextStyle(
+                      fontSize: 30,
+                      fontWeight: FontWeight.w600,
+                      color: char == spellingBeeController.centerLetter
+                          ? ConstantColor.ff8E51FF
+                          : ConstantColor.ff05000B,
+                      fontFamily: ConstantFont.moonchild,
+                    ),
+                  );
+                }).toList(),
+        ),
+      );
+    });
   }
 
   String addHashAboveChar(String text, String targetChar) {

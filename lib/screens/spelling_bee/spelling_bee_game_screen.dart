@@ -46,7 +46,7 @@ class _SpellingBeeScreenState extends State<SpellingBeeScreen>
     spellingBeeModel = spellingBeeList.first;
     totalSteps.value = spellingBeeModel.spellingList.length;
     _controller = AnimationController(
-      duration: const Duration(milliseconds: 500),
+      duration: const Duration(seconds: 1),
       vsync: this,
     );
 
@@ -240,7 +240,7 @@ class _SpellingBeeScreenState extends State<SpellingBeeScreen>
             if (word.isNotEmpty) {
               if (word.value.length < 4) {
                 startShake("Too short");
-                Future.delayed(Duration(milliseconds: 500), () {
+                Future.delayed(Duration(seconds: 1), () {
                   word.value = "";
                   showToShortLabel.value = "";
                 });
@@ -250,7 +250,7 @@ class _SpellingBeeScreenState extends State<SpellingBeeScreen>
                   word.value = "";
                 } else {
                   startShake("Invalid word");
-                  Future.delayed(Duration(milliseconds: 500), () {
+                  Future.delayed(Duration(seconds: 1), () {
                     word.value = "";
                     showToShortLabel.value = "";
                   });

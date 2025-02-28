@@ -10,8 +10,8 @@ import '../../widgets/custom_text.dart';
 import '../../widgets/rich_text.dart';
 import 'keyboard.dart';
 
-class GuideScreen extends StatelessWidget {
-  const GuideScreen({
+class WordlesGuideScreen extends StatelessWidget {
+  const WordlesGuideScreen({
     super.key,
   });
 

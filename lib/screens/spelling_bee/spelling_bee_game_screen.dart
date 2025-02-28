@@ -3,6 +3,7 @@ import 'package:flutter_polygon/flutter_polygon.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
+import 'package:wordles_multi_game_flutter/screens/spelling_bee/spelling_bee_guide_screen.dart';
 
 import '/constants/constant_color.dart';
 import '/constants/constant_font.dart';
@@ -16,7 +17,7 @@ import '/widgets/pin_widget.dart';
 import '../../utils/shared_preference.dart';
 import '../../widgets/custom_text.dart';
 import '../../widgets/hint_button.dart';
-import '../wordles/guide_screen.dart';
+import 'models/spelling_bee_model.dart';
 
 class SpellingBeeScreen extends StatefulWidget {
   const SpellingBeeScreen({super.key});
@@ -25,20 +26,44 @@ class SpellingBeeScreen extends StatefulWidget {
   State<SpellingBeeScreen> createState() => _SpellingBeeScreenState();
 }
 
-class _SpellingBeeScreenState extends State<SpellingBeeScreen> {
+class _SpellingBeeScreenState extends State<SpellingBeeScreen>
+    with SingleTickerProviderStateMixin {
   final SpellingBeeController spellingBeeController =
       Get.find<SpellingBeeController>();
   RxString word = "".obs;
-
+  late SpellingBeeModel spellingBeeModel;
+  late AnimationController _controller;
+  late Animation<double> _animation;
   RxList<String> wordList = <String>[].obs;
+  RxString showToShortLabel = "".obs;
 
-  int totalSteps = 8;
-  int activeStep = 5;
-  double totalWidth = Get.width - 100.w;
+  RxInt totalSteps = 0.obs;
+  RxInt activeStep = (-1).obs;
+  double totalWidth = Get.width - 140.w;
 
   @override
   void initState() {
+    spellingBeeModel = spellingBeeList.first;
+    totalSteps.value = spellingBeeModel.spellingList.length;
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 500),
+      vsync: this,
+    );
+
+    _animation = TweenSequence<double>([
+      TweenSequenceItem(tween: Tween(begin: 0, end: 10), weight: 1),
+      TweenSequenceItem(tween: Tween(begin: 10, end: -10), weight: 1),
+      TweenSequenceItem(tween: Tween(begin: -10, end: 10), weight: 1),
+      TweenSequenceItem(tween: Tween(begin: 10, end: -10), weight: 1),
+      TweenSequenceItem(tween: Tween(begin: -10, end: 0), weight: 1),
+    ]).animate(_controller);
+
     super.initState();
+  }
+
+  void startShake(String title) {
+    showToShortLabel.value = title;
+    _controller.forward(from: 0);
   }
 
   @override
@@ -65,7 +90,7 @@ class _SpellingBeeScreenState extends State<SpellingBeeScreen> {
                       clipBehavior: Clip.antiAliasWithSaveLayer,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20)),
-                      child: GuideScreen(),
+                      child: SpellingBeeGuideScreen(),
                     );
                   });
             },
@@ -87,6 +112,42 @@ class _SpellingBeeScreenState extends State<SpellingBeeScreen> {
               width: double.infinity,
               color: Colors.white,
             ),
+            Obx(() {
+              return showToShortLabel.isNotEmpty
+                  ? AnimatedBuilder(
+                      animation: _animation,
+                      builder: (context, child) {
+                        return Transform.translate(
+                          offset: Offset(_animation.value,
+                              0), // Shake in horizontal direction
+                          child: child,
+                        );
+                      },
+                      child: Container(
+                        margin: EdgeInsets.only(top: 5.h),
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 5.w,
+                          vertical: 2.h,
+                        ),
+                        decoration: BoxDecoration(
+                            color:
+                                ConstantColor.ff05000B.withValues(alpha: 0.5),
+                            borderRadius: BorderRadius.circular(5.r)),
+                        child: CustomText(
+                          txtTitle: showToShortLabel.value,
+                          style:
+                              Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w800,
+                                    color: ConstantColor.ffffffff,
+                                  ),
+                        ),
+                      ),
+                    )
+                  : SizedBox(
+                      height: 31 + 5.h,
+                    );
+            }),
             _buildTypedWord(),
             SizedBox(
               width: 300.h,
@@ -94,13 +155,13 @@ class _SpellingBeeScreenState extends State<SpellingBeeScreen> {
               child: Stack(
                 alignment: Alignment.center,
                 children: [
-                  buildHexagon(spellingBeeController.letterList[0], -40, -70),
-                  buildHexagon(spellingBeeController.letterList[1], 40, -70),
-                  buildHexagon(spellingBeeController.letterList[2], -80, 0),
-                  buildHexagon(spellingBeeController.letterList[3], 80, 0),
-                  buildHexagon(spellingBeeController.letterList[4], -40, 70),
-                  buildHexagon(spellingBeeController.letterList[5], 40, 70),
-                  buildHexagon(spellingBeeController.centerLetter, 0, 0,
+                  buildHexagon(spellingBeeModel.letters[0], -40, -70),
+                  buildHexagon(spellingBeeModel.letters[1], 40, -70),
+                  buildHexagon(spellingBeeModel.letters[2], -80, 0),
+                  buildHexagon(spellingBeeModel.letters[3], 80, 0),
+                  buildHexagon(spellingBeeModel.letters[4], -40, 70),
+                  buildHexagon(spellingBeeModel.letters[5], 40, 70),
+                  buildHexagon(spellingBeeModel.centerLetter, 0, 0,
                       isCenter: true),
                 ],
               ),
@@ -112,7 +173,7 @@ class _SpellingBeeScreenState extends State<SpellingBeeScreen> {
     );
   }
 
-  Obx _buildTypedWord() {
+  Widget _buildTypedWord() {
     return Obx(() {
       return RichText(
         text: TextSpan(
@@ -128,33 +189,24 @@ class _SpellingBeeScreenState extends State<SpellingBeeScreen> {
                     ),
                   )
                 ]
-              : word.value.split('').map((char) {
-                  return TextSpan(
-                    text: char,
-                    style: TextStyle(
-                      fontSize: 30,
-                      fontWeight: FontWeight.w600,
-                      color: char == spellingBeeController.centerLetter
-                          ? ConstantColor.ff8E51FF
-                          : ConstantColor.ff05000B,
-                      fontFamily: ConstantFont.moonchild,
-                    ),
-                  );
-                }).toList(),
+              : word.value.split('').map(
+                  (char) {
+                    return TextSpan(
+                      text: char,
+                      style: TextStyle(
+                        fontSize: 30,
+                        fontWeight: FontWeight.w600,
+                        color: char == spellingBeeController.centerLetter
+                            ? ConstantColor.ff8E51FF
+                            : ConstantColor.ff05000B,
+                        fontFamily: ConstantFont.moonchild,
+                      ),
+                    );
+                  },
+                ).toList(),
         ),
       );
     });
-  }
-
-  String addHashAboveChar(String text, String targetChar) {
-    int index = text.indexOf(targetChar);
-    if (index == -1) return text; // If targetChar is not found
-
-    // Split the string and insert '#'
-    String before = text.substring(0, index);
-    String after = text.substring(index);
-
-    return "$before\n#\n$after";
   }
 
   Widget _buildDeleteRefreshAndEnterButton() {
@@ -175,14 +227,36 @@ class _SpellingBeeScreenState extends State<SpellingBeeScreen> {
         CommonIconButton(
           bgColor: ConstantColor.ffffffff,
           image: ConstantImage.refresh,
-          onTap: () {},
+          onTap: () {
+            spellingBeeModel.letters.shuffle();
+            if (mounted) {
+              setState(() {});
+            }
+          },
         ),
         Gap(10.w),
         CommonButton(
           onTap: () {
             if (word.isNotEmpty) {
-              wordList.add(word.value);
-              word.value = "";
+              if (word.value.length < 4) {
+                startShake("Too short");
+                Future.delayed(Duration(milliseconds: 500), () {
+                  word.value = "";
+                  showToShortLabel.value = "";
+                });
+              } else {
+                if (spellingBeeModel.spellingList.contains(word.value)) {
+                  wordList.add(word.value);
+                  word.value = "";
+                } else {
+                  startShake("Invalid word");
+                  Future.delayed(Duration(milliseconds: 500), () {
+                    word.value = "";
+                    showToShortLabel.value = "";
+                  });
+                }
+              }
+              activeStep.value = wordList.length - 1;
             }
           },
           title: "Enter",
@@ -237,30 +311,32 @@ class _SpellingBeeScreenState extends State<SpellingBeeScreen> {
   }
 
   Widget _buildProgressBar(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 20.h),
-      decoration: BoxDecoration(color: Colors.white),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          CustomText(
-            txtTitle: "Good",
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  fontWeight: FontWeight.w600,
-                ),
-          ),
-          Gap(8.w),
-          ...List.generate(
-            totalSteps,
-            (index) => buildStep(
-              isActive: index <= activeStep,
-              lineWidth: (totalWidth - (totalSteps * 10.w)) /
-                  (totalSteps - 1), // Dynamic line width
+    return Obx(() {
+      return Container(
+        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 20.h),
+        decoration: BoxDecoration(color: Colors.white),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            CustomText(
+              txtTitle: "Good",
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    fontWeight: FontWeight.w600,
+                  ),
             ),
-          ),
-        ],
-      ),
-    );
+            Gap(8.w),
+            ...List.generate(
+              totalSteps.value,
+              (index) => buildStep(
+                isActive: index <= activeStep.value,
+                lineWidth: (totalWidth - (totalSteps.value * 10.w)) /
+                    (totalSteps.value - 1), // Dynamic line width
+              ),
+            ),
+          ],
+        ),
+      );
+    });
   }
 
   Widget buildStep({required bool isActive, required double lineWidth}) {

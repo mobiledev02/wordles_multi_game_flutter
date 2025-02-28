@@ -19,7 +19,7 @@ import 'package:wordles_multi_game_flutter/widgets/hint_button.dart';
 
 import '../../constants/constant_color.dart';
 import '../../widgets/custom_text.dart';
-import 'guide_screen.dart';
+import 'wordles_guide_screen.dart';
 
 class CrossWordGameScreen extends StatefulWidget {
   const CrossWordGameScreen({super.key});
@@ -99,7 +99,7 @@ class _CrossWordGameScreenState extends State<CrossWordGameScreen> {
                         clipBehavior: Clip.antiAliasWithSaveLayer,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20)),
-                        child: GuideScreen(),
+                        child: WordlesGuideScreen(),
                       );
                     });
               },

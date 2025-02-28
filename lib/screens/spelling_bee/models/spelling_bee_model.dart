@@ -19,8 +19,8 @@ String spellingBeeModelToJson(SpellingBeeModel data) =>
 
 class SpellingBeeModel {
   String centerLetter;
-  List<dynamic> letters;
-  List<dynamic> spellingList;
+  List<String> letters;
+  List<String> spellingList;
 
   SpellingBeeModel({
     required this.centerLetter,
@@ -31,15 +31,26 @@ class SpellingBeeModel {
   factory SpellingBeeModel.fromJson(Map<String, dynamic> json) =>
       SpellingBeeModel(
         centerLetter: json["centerLetter"],
-        letters: List<dynamic>.from(json["letters"].map((x) => x)),
-        spellingList: List<dynamic>.from(json["spelling_list"].map((x) => x)),
+        letters: List<String>.from(json["letters"].map((x) => x)),
+        spellingList: List<String>.from(json["spelling_list"].map((x) => x)),
       );
 
   Map<String, dynamic> toJson() => {
         "centerLetter": centerLetter,
-        "letters": List<dynamic>.from(letters.map((x) => x)),
-        "spelling_list": List<dynamic>.from(spellingList.map((x) => x)),
+        "letters": List<String>.from(letters.map((x) => x)),
+        "spelling_list": List<String>.from(spellingList.map((x) => x)),
       };
 }
 
-List<SpellingBeeModel> spellingBeeList = [];
+List<SpellingBeeModel> spellingBeeList = [
+  SpellingBeeModel(
+    centerLetter: "E",
+    letters: ['C', 'O', 'D', 'X', 'Z', 'T'],
+    spellingList: [
+      'CODE',
+      'EXOTIC',
+      'EXITED',
+      'COTED',
+    ],
+  ),
+];

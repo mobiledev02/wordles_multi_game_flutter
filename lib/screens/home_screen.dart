@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:wordles_multi_game_flutter/screens/spelling_bee/controller/spelling_bee_controller.dart';
 
 import '../card/game_category_card.dart';
 import '../constants/constant_image.dart';
@@ -15,6 +17,11 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

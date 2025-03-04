@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_polygon/flutter_polygon.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_spell_checker/flutter_spell_checker.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:wordles_multi_game_flutter/screens/spelling_bee/spelling_bee_guide_screen.dart';
@@ -31,7 +32,7 @@ class _SpellingBeeScreenState extends State<SpellingBeeScreen>
   final SpellingBeeController spellingBeeController =
       Get.find<SpellingBeeController>();
   RxString word = "".obs;
-  late SpellingBeeModel spellingBeeModel;
+
   late AnimationController _controller;
   late Animation<double> _animation;
   RxList<String> wordList = <String>[].obs;
@@ -43,8 +44,8 @@ class _SpellingBeeScreenState extends State<SpellingBeeScreen>
 
   @override
   void initState() {
-    spellingBeeModel = spellingBeeList.first;
-    totalSteps.value = spellingBeeModel.spellingList.length;
+    spellingBeeController.setLevel();
+    totalSteps.value = 5;
     _controller = AnimationController(
       duration: const Duration(seconds: 1),
       vsync: this,
@@ -112,42 +113,46 @@ class _SpellingBeeScreenState extends State<SpellingBeeScreen>
               width: double.infinity,
               color: Colors.white,
             ),
-            Obx(() {
-              return showToShortLabel.isNotEmpty
-                  ? AnimatedBuilder(
-                      animation: _animation,
-                      builder: (context, child) {
-                        return Transform.translate(
-                          offset: Offset(_animation.value,
-                              0), // Shake in horizontal direction
-                          child: child,
-                        );
-                      },
-                      child: Container(
-                        margin: EdgeInsets.only(top: 5.h),
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 5.w,
-                          vertical: 2.h,
+            Obx(
+              () {
+                return showToShortLabel.isNotEmpty
+                    ? AnimatedBuilder(
+                        animation: _animation,
+                        builder: (context, child) {
+                          return Transform.translate(
+                            offset: Offset(_animation.value,
+                                0), // Shake in horizontal direction
+                            child: child,
+                          );
+                        },
+                        child: Container(
+                          margin: EdgeInsets.only(top: 5.h),
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 5.w,
+                            vertical: 2.h,
+                          ),
+                          decoration: BoxDecoration(
+                              color:
+                                  ConstantColor.ff05000B.withValues(alpha: 0.5),
+                              borderRadius: BorderRadius.circular(5.r)),
+                          child: CustomText(
+                            txtTitle: showToShortLabel.value,
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium
+                                ?.copyWith(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w800,
+                                  color: ConstantColor.ffffffff,
+                                ),
+                          ),
                         ),
-                        decoration: BoxDecoration(
-                            color:
-                                ConstantColor.ff05000B.withValues(alpha: 0.5),
-                            borderRadius: BorderRadius.circular(5.r)),
-                        child: CustomText(
-                          txtTitle: showToShortLabel.value,
-                          style:
-                              Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w800,
-                                    color: ConstantColor.ffffffff,
-                                  ),
-                        ),
-                      ),
-                    )
-                  : SizedBox(
-                      height: 31 + 5.h,
-                    );
-            }),
+                      )
+                    : SizedBox(
+                        height: 31 + 5.h,
+                      );
+              },
+            ),
             _buildTypedWord(),
             SizedBox(
               width: 300.h,
@@ -155,13 +160,30 @@ class _SpellingBeeScreenState extends State<SpellingBeeScreen>
               child: Stack(
                 alignment: Alignment.center,
                 children: [
-                  buildHexagon(spellingBeeModel.letters[0], -40, -70),
-                  buildHexagon(spellingBeeModel.letters[1], 40, -70),
-                  buildHexagon(spellingBeeModel.letters[2], -80, 0),
-                  buildHexagon(spellingBeeModel.letters[3], 80, 0),
-                  buildHexagon(spellingBeeModel.letters[4], -40, 70),
-                  buildHexagon(spellingBeeModel.letters[5], 40, 70),
-                  buildHexagon(spellingBeeModel.centerLetter, 0, 0,
+                  buildHexagon(
+                      spellingBeeController.spellingBeeModel.letters[6],
+                      -40,
+                      -70),
+                  buildHexagon(
+                      spellingBeeController.spellingBeeModel.letters[1],
+                      40,
+                      -70),
+                  buildHexagon(
+                      spellingBeeController.spellingBeeModel.letters[2],
+                      -80,
+                      0),
+                  buildHexagon(
+                      spellingBeeController.spellingBeeModel.letters[3], 80, 0),
+                  buildHexagon(
+                      spellingBeeController.spellingBeeModel.letters[4],
+                      -40,
+                      70),
+                  buildHexagon(
+                      spellingBeeController.spellingBeeModel.letters[5],
+                      40,
+                      70),
+                  buildHexagon(
+                      spellingBeeController.spellingBeeModel.letters[0], 0, 0,
                       isCenter: true),
                 ],
               ),
@@ -185,7 +207,7 @@ class _SpellingBeeScreenState extends State<SpellingBeeScreen>
                       fontSize: 30,
                       fontWeight: FontWeight.w600,
                       color: ConstantColor.ff05000B,
-                      fontFamily: ConstantFont.moonchild,
+                      fontFamily: ConstantFont.moonChild,
                     ),
                   )
                 ]
@@ -196,10 +218,12 @@ class _SpellingBeeScreenState extends State<SpellingBeeScreen>
                       style: TextStyle(
                         fontSize: 30,
                         fontWeight: FontWeight.w600,
-                        color: char == spellingBeeController.centerLetter
+                        color: char ==
+                                spellingBeeController
+                                    .spellingBeeModel.letters[0]
                             ? ConstantColor.ff8E51FF
                             : ConstantColor.ff05000B,
-                        fontFamily: ConstantFont.moonchild,
+                        fontFamily: ConstantFont.moonChild,
                       ),
                     );
                   },
@@ -228,7 +252,7 @@ class _SpellingBeeScreenState extends State<SpellingBeeScreen>
           bgColor: ConstantColor.ffffffff,
           image: ConstantImage.refresh,
           onTap: () {
-            spellingBeeModel.letters.shuffle();
+            shuffleExcludingFirst();
             if (mounted) {
               setState(() {});
             }
@@ -236,7 +260,8 @@ class _SpellingBeeScreenState extends State<SpellingBeeScreen>
         ),
         Gap(10.w),
         CommonButton(
-          onTap: () {
+          onTap: () async {
+            bool result = false;
             if (word.isNotEmpty) {
               if (word.value.length < 4) {
                 startShake("Too short");
@@ -244,8 +269,22 @@ class _SpellingBeeScreenState extends State<SpellingBeeScreen>
                   word.value = "";
                   showToShortLabel.value = "";
                 });
+              } else if (!word.value.contains(
+                  spellingBeeController.spellingBeeModel.letters[0])) {
+                startShake("Spelling Must includes center letter");
+                Future.delayed(Duration(seconds: 1), () {
+                  word.value = "";
+                  showToShortLabel.value = "";
+                });
               } else {
-                if (spellingBeeModel.spellingList.contains(word.value)) {
+                result = await checkSpellingIsCorrect(spelling: word.value);
+                if ((wordList.contains(word.value))) {
+                  startShake("This word is already in the list");
+                  Future.delayed(Duration(seconds: 1), () {
+                    word.value = "";
+                    showToShortLabel.value = "";
+                  });
+                } else if (result) {
                   wordList.add(word.value);
                   word.value = "";
                 } else {
@@ -257,6 +296,13 @@ class _SpellingBeeScreenState extends State<SpellingBeeScreen>
                 }
               }
               activeStep.value = wordList.length - 1;
+
+              if (wordList.length == 5) {
+                wordList.clear();
+                showToShortLabel.value =
+                    "Congratulations, you've completed the game!";
+                spellingBeeController.setLevel();
+              }
             }
           },
           title: "Enter",
@@ -300,7 +346,7 @@ class _SpellingBeeScreenState extends State<SpellingBeeScreen>
                       color: isCenter ? Colors.white : Colors.black,
                       fontSize: 30,
                       fontWeight: FontWeight.w600,
-                      fontFamily: ConstantFont.moonchild,
+                      fontFamily: ConstantFont.moonChild,
                     ),
               ),
             ),
@@ -364,20 +410,21 @@ class _SpellingBeeScreenState extends State<SpellingBeeScreen>
       id: spellingBeeController.updateHint,
       builder: (controller) {
         return HintButton(
-            hintCount: SharedPreferencesHelper.getSpellingBeeHint(),
-            onTap: () {
-              if (SharedPreferencesHelper.getSpellingBeeHint() > 0) {
-                // int hint = (math.Random()).nextInt(5);
-                // commonToast(
-                //   message:
-                //       "${hint + 1} letter is \"${_secret.characters.characterAt(hint).toUpperCase()}\". Hope it helps!",
-                // );
+          hintCount: SharedPreferencesHelper.getSpellingBeeHint(),
+          onTap: () {
+            if (SharedPreferencesHelper.getSpellingBeeHint() > 0) {
+              // int hint = (math.Random()).nextInt(5);
+              // commonToast(
+              //   message:
+              //       "${hint + 1} letter is \"${_secret.characters.characterAt(hint).toUpperCase()}\". Hope it helps!",
+              // );
 
-                SharedPreferencesHelper.setSpellingBeeHint(
-                  hintCount: SharedPreferencesHelper.getSpellingBeeHint() - 1,
-                );
-              }
-            });
+              SharedPreferencesHelper.setSpellingBeeHint(
+                hintCount: SharedPreferencesHelper.getSpellingBeeHint() - 1,
+              );
+            }
+          },
+        );
       },
     );
   }
@@ -407,5 +454,29 @@ class _SpellingBeeScreenState extends State<SpellingBeeScreen>
         ),
       );
     });
+  }
+
+  Future<bool> checkSpellingIsCorrect({required String spelling}) async {
+    final result =
+        await FlutterSpellChecker.checkSpelling(spelling.toLowerCase());
+    return result.isNotEmpty ? false : true;
+  }
+
+  void shuffleExcludingFirst() {
+    var letters = spellingBeeController.spellingBeeModel.letters;
+
+    if (letters.length > 1) {
+      // Ensure there's something to shuffle
+      var firstElement = letters[0]; // Store the first element
+      var remainingList = letters.sublist(1)
+        ..shuffle(); // Shuffle only elements from index 1 onward
+
+      letters
+        ..clear()
+        ..add(firstElement) // Add first element back
+        ..addAll(remainingList); // Add shuffled remaining elements
+
+      spellingBeeController.spellingBeeModel.letters = letters;
+    }
   }
 }

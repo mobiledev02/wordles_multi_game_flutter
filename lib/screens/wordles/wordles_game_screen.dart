@@ -184,7 +184,7 @@ class _CrossWordGameScreenState extends State<CrossWordGameScreen> {
                             ?.copyWith(
                               fontSize: 32,
                               color: getFontColor(_inputsState[index], false),
-                              fontFamily: ConstantFont.moonchild,
+                              fontFamily: ConstantFont.moonChild,
                             ),
                       ),
                     );

@@ -4,7 +4,9 @@ import 'package:wordles_multi_game_flutter/screens/wordles/controller/wordles_co
 
 class MainBindings extends Bindings {
   @override
-  void dependencies() async {}
+  void dependencies() async {
+    Get.lazyPut<SpellingBeeController>(() => SpellingBeeController());
+  }
 }
 
 class WordlesBindings extends Bindings {
